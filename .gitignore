@@ -18,3 +18,9 @@ _autosave-*
 # Exported BOM files
 *.xml
 *.csv
+
+# Node modules for firmware toolchain
+node_modules
+
+# IntelliJ IDE
+.idea
