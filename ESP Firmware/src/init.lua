@@ -1,6 +1,6 @@
 --- hackAIR ESP Firmware
 -- Handles WiFi setup and network communications
--- @version 0.3.1
+-- @version 0.4.0
 -- @author Thanasis Georgiou
 
 --- The server URL used for sending data to the hackAIR project
@@ -55,7 +55,7 @@ function handle_uart(data)
     elseif com == 'e+restart' then -- Restart ESP
         node.restart()
     elseif com == 'e+version' then -- Version info
-        uart.write(0, 'v3')
+        uart.write(0, 'v4')
     elseif com == 'e+send' then -- Send data to server
         if args == nil then
             print('Command e+send requires parameters (pm25, pm10, battery, tamper, error)')
