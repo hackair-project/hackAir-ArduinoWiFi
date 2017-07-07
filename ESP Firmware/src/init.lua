@@ -63,18 +63,26 @@ function handle_uart(data)
             sent_data(args)
         end
     elseif com == 'e+clearap' then -- Clear saved access points
-        local station_cfg = {}
-        station_cfg.ssid = "Invalid AP"
-        station_cfg.bssid = "AA:BB:CC:AA:BB:CC"
-        station_cfg.pwd = "Invalid AP"
-        station_cfg.save = true
-        wifi.sta.config(station_cfg)
+        wifi.sta.clearconfig()
         node.restart()
     elseif com == 'e+token' then -- Grab the token for authorization
         if args == nil then
             print('Command e+token required parameters (token)')
         else
             auth_token = args
+        end
+    elseif com == 'e+wifi' then -- Set the SSID to connect to
+        if args == nil then
+            print('Command e+wifi requires two parameters, SSID and password')
+            print('SSIDs and passwords with commas "," are not supported, please use the WiFi method')
+        else
+            local ssid, password = string.match(args, "([^,]+),([^,]*)")
+            if ssid ~= nil and password ~= nil then
+                wifi.sta.config({ssid = ssid, pwd = password, auto = true})
+                enduser_setup.stop()
+            else
+                print('Invalid parameters')
+            end
         end
     elseif com == 'e+isready' then -- Is the ESP ready and connected?
         if wifi.sta.getip() ~= nil then
