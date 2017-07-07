@@ -99,23 +99,25 @@ end
 uart.setup(0, 115200, 8, uart.PARITY_NONE, uart.STOPBITS_1, 0)
 uart.on('data', "\n", handle_uart, 0)
 
--- If the
-
 -- Create AP for configuration
-wifi.ap.config({ssid = "hackAIR-"..node.chipid(), pwd = "hackAIR-"..node.chipid()})
+wifi.ap.config({ssid = 'hackAIR-'..node.chipid(), pwd = 'hackAIR-'..node.chipid()})
 
 -- Manual mode
-enduser_setup.manual(false)
+enduser_setup.manual(true)
 enduser_setup.start(
     function()
         -- WiFi information is stored in wifi.sta.config so we don't have
         -- to do anything special here.
 
         -- Print debug info
-        print("Connected to wifi as:" .. wifi.sta.getip())
+        print('Connected to wifi as:' .. wifi.sta.getip())
+        tmr.create()::alarm(10000, tmr.ALARM_SINGLE, function()
+            print('Turning off AP')
+            enduser_setup.stop()
+        end)
     end,
     function(err, str)
-        print("enduser_setup: Err #" .. err .. ": " .. str)
+        print('enduser_setup: Err #' .. err .. ': ' .. str)
     end)
 
 -- Display a warning message to the prompt
