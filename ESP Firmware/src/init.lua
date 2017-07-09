@@ -99,26 +99,23 @@ end
 uart.setup(0, 115200, 8, uart.PARITY_NONE, uart.STOPBITS_1, 0)
 uart.on('data', "\n", handle_uart, 0)
 
--- Create AP for configuration
-wifi.ap.config({ssid = 'hackAIR-'..node.chipid(), pwd = 'hackAIR-'..node.chipid()})
-
--- Manual mode
-enduser_setup.manual(true)
-enduser_setup.start(
-    function()
-        -- WiFi information is stored in wifi.sta.config so we don't have
-        -- to do anything special here.
-
-        -- Print debug info
-        print('Connected to wifi as:' .. wifi.sta.getip())
-        tmr.create()::alarm(10000, tmr.ALARM_SINGLE, function()
-            print('Turning off AP')
-            enduser_setup.stop()
-        end)
-    end,
-    function(err, str)
-        print('enduser_setup: Err #' .. err .. ': ' .. str)
-    end)
+ssid, password, bssid_set, bssid = wifi.sta.getconfig()
+if ssid == '' then
+    print('No WiFi configuration stored, going into AP mode')
+    enduser_setup.start(
+      function()
+          -- Print debug info
+          ssid, password, bssid_set, bssid = wifi.sta.getconfig()
+          print('Connected to '.. ssid .. ' with password ' .. password .. ' as: ' .. wifi.sta.getip())
+      end,
+      function(err, str)
+          print('enduser_setup: Err #' .. err .. ': ' .. str)
+      end
+    )
+else
+    wifi.setmode(wifi.STATION)
+    wifi.sta.connect()
+end
 
 -- Display a warning message to the prompt
 print('hackAir ESP Firmware')
