@@ -4,7 +4,7 @@
 -- @author Thanasis Georgiou
 
 --- The server URL used for sending data to the hackAIR project
-server_URL = "http://hackair.draxis.gr:8000/sensors/arduino/measurements"
+server_URL = "https://api.hackair.eu/sensors/arduino/measurements"
 auth_token = ""
 
 function sent_data(args)
