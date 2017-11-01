@@ -22,6 +22,12 @@ The PCB is designed using the open source EDA called [KiCad](http://kicad-pcb.or
 
 ### Changelog
 
+#### Version 2.2
+
+* Fix silkscreen of transistor Q1
+* Remove footprint for ESP-12
+* Add silkscreen for the programming header (pin numbers and names)
+
 #### Version 2
  - [Add] Pull-down resistor for pin 2 (ESP Reset) so the user can flash the Arduino without jumpers
  - [Add] Silkscreen markings for pin numbers
